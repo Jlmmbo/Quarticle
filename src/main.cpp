@@ -9,6 +9,8 @@
 #define PARTICLE_COUNT 2
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
+#define FIXED_TIMESTEP (1.0 / 60.0)
+#define MAX_FRAME_TIME 0.1
 
 int main() {
     glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
@@ -39,9 +41,25 @@ int main() {
         {600, 100, 10, 0.01, 0, 0, 2, 0, 60},
     };
 
+    double lastTime = glfwGetTime();
+    double accumulator = 0.0;
+
     while (!glfwWindowShouldClose(window)) {
+        double currentTime = glfwGetTime();
+        double frameTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        if (frameTime > MAX_FRAME_TIME)
+            frameTime = MAX_FRAME_TIME;
+
+        accumulator += frameTime;
+
+        while (accumulator >= FIXED_TIMESTEP) {
+            UpdateParticles(particles, PARTICLE_COUNT, FIXED_TIMESTEP);
+            accumulator -= FIXED_TIMESTEP;
+        }
+
         glClear(GL_COLOR_BUFFER_BIT);
-        UpdateParticles(particles, PARTICLE_COUNT);
         Draw(particles, PARTICLE_COUNT);
         glfwSwapBuffers(window);
         glfwPollEvents();

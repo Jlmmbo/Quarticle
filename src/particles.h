@@ -11,12 +11,12 @@ typedef struct Particle {
     int type;// 0
 } Particle;
 
-void UpdateParticles(Particle* particles, int count) {
+void UpdateParticles(Particle* particles, int count, double dt) {
     //classical forces
     float force;
     for (int i = 0; i < count; i++) {
-        particles[i].x += particles[i].velocityX;
-        particles[i].y += particles[i].velocityY;
+        particles[i].x += particles[i].velocityX * dt;
+        particles[i].y += particles[i].velocityY * dt;
         for (int j = 0; j < count; j++) {
             if (i == j) continue;
 
@@ -30,8 +30,8 @@ void UpdateParticles(Particle* particles, int count) {
             //Electromagnetic force
             force += particles[i].charge * particles[j].charge / (d * d);
 
-            particles[i].velocityX += force * dx / d / particles[i].mass;
-            particles[i].velocityY += force * dy / d / particles[i].mass;
+            particles[i].velocityX += force * dx / d / particles[i].mass * dt;
+            particles[i].velocityY += force * dy / d / particles[i].mass * dt;
         }
     }
 }
