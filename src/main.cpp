@@ -6,6 +6,10 @@
 #include "particles.h"
 #include "draw.h"
 
+#define PARTICLE_COUNT 2
+#define SCREEN_WIDTH 1920
+#define SCREEN_HEIGHT 1080
+
 int main() {
     glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
     if (!glfwInit()) {
@@ -17,7 +21,7 @@ int main() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    GLFWwindow* window = glfwCreateWindow(800, 600, "Quarticle", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Quarticle", nullptr, nullptr);
     if (!window) {
         std::cerr << "Failed to create GLFW window\n";
         glfwTerminate();
@@ -37,8 +41,8 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        UpdateParticles(particles, 10);
-        Draw(particles, 10);
+        UpdateParticles(particles, PARTICLE_COUNT);
+        Draw(particles, PARTICLE_COUNT);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
