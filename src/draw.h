@@ -135,7 +135,7 @@ void Draw(Particle *particles, int count)
         vertexData[i * 6 + 2] = r;
         vertexData[i * 6 + 3] = g;
         vertexData[i * 6 + 4] = b;
-        vertexData[i * 6 + 5] = particles[i].mass;  // Mass for point size
+        vertexData[i * 6 + 5] = particles[i].size;
     }
 
     // Update buffer data

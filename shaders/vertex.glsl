@@ -1,12 +1,12 @@
 #version 330 core
 layout (location = 0) in vec2 position;
 layout (location = 1) in vec3 color;
-layout (location = 2) in float mass;
+layout (location = 2) in float size;
 
 out vec3 vertexColor;
 
 void main() {
     gl_Position = vec4(position, 0.0, 1.0);
     vertexColor = color;
-    gl_PointSize = mass * 10.0;  // Scale point size by mass
+    gl_PointSize = max(1.0, size * 10.0);
 }

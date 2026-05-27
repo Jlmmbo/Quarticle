@@ -29,18 +29,10 @@ int main() {
 
     InitOpenGL();
 
-    Particle particles[10] = {
-        //x,y,mass,spin,charge,chromo,velocityX, velocityY
-        {200, 150, 10, .5f, 1, 1, 0, 0},
-        {400, 150, 20, 1, 1, 2, 0, 0},
-        {600, 150, 30, 1, 1, 3, 0, 0},
-        {200, 300, 10, 1, 1, -1, 0, 0},
-        {400, 300, 10, 1, 1, -2, 0, 0},
-        {600, 300, 5, 1, 1, -3, 0, 0},
-        {200, 450, 5, 1, 1, 0, 0, 0},
-        {400, 450, 0.01, 1, 1, 3, 0, 0},
-        {600, 450, 1, 1, 1, -1, 0, 0},
-        {400, 75, 0.01, 1, 1, 0, 0, 0},
+    Particle particles[] = {
+        //x ,   y,size,mass,spin,charge,chromo,velocityX, velocityY
+        {400, 100, 10, 1000000, 0, 0, 1, 0, 0},
+        {600, 100, 10, 0.01, 0, 0, 2, 0, 60},
     };
 
     while (!glfwWindowShouldClose(window)) {
