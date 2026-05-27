@@ -297,17 +297,29 @@ static void DrawParticlePanel(Particle* p, int index, float screenW, float scree
     DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
     ty += ls;
 
-    snprintf(buf, sizeof(buf), "Vel: (%.2f, %.2f)", p->velocityX, p->velocityY);
+    snprintf(buf, sizeof(buf), "Mom: mag=%.2f ang=%.1f deg", p->p_mag, p->p_angle * 180.0 / M_PI);
     DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
     ty += ls;
 
-    double speed = sqrt(p->velocityX * p->velocityX + p->velocityY * p->velocityY);
-    snprintf(buf, sizeof(buf), "Speed: %.2f", speed);
+    double mC = p->mass * C;
+    double E = sqrt(mC * mC + p->p_mag * p->p_mag);
+    double v_mag = (E > 0.0) ? p->p_mag * C / E : 0.0;
+
+    snprintf(buf, sizeof(buf), "Vel: mag=%.2f ang=%.1f deg", v_mag, p->p_angle * 180.0 / M_PI);
     DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
     ty += ls;
 
-    double dir = atan2(p->velocityY, p->velocityX) * 180.0 / M_PI;
+    snprintf(buf, sizeof(buf), "Speed: %.2f (%.3f c)", v_mag, v_mag / C);
+    DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
+    ty += ls;
+
+    double dir = p->p_angle * 180.0 / M_PI;
     snprintf(buf, sizeof(buf), "Dir: %.1f deg", dir);
+    DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
+    ty += ls;
+
+    double gamma = (mC > 0.0 && E > 0.0) ? E / mC : 1.0;
+    snprintf(buf, sizeof(buf), "Gamma: %.4f", gamma);
     DrawString(tx, ty, buf, 0.9f, 0.9f, 0.9f, 1.0f, 1.0f);
     ty += ls;
 

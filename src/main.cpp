@@ -7,7 +7,7 @@
 #include "draw.h"
 #include "ui.h"
 
-#define PARTICLE_COUNT 2
+#define PARTICLE_COUNT 5
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
 #define FIXED_TIMESTEP (1.0 / 60.0)
@@ -53,9 +53,11 @@ int main() {
     InitOpenGL();
 
     Particle particles[] = {
-        //x ,   y,size,mass,spin,charge,chromo,velocityX, velocityY
         {400, 100, 10, 1000000, 0, 0, 1, 0, 0},
-        {600, 100, 10, 0.01, 0, 0, 2, 0, 60},
+        {600, 100, 10, 0.01, 0, 0, 2, 0.6, M_PI/2},
+        {800, 100, 10, 0.01, 0, 0, 3, 0.6, M_PI/2},
+        {1000, 100, 10, 0.01, 0, 0, 4, 0.6, M_PI/2},
+        {1200, 100, 10, 0.01, 0, 0, 5, 0.6, M_PI/2},
     };
 
     if (!InitUI()) {
