@@ -1,12 +1,13 @@
 // Uses planck units for simplicity of formulas
 
 typedef struct Particle {
-    float x, y;
+    double x, y;
+    float size;
     float mass;
     float spin;
     float charge;
     int chromo;// 1/2/3: red/green/blue, 0: white, -1/-2/-3: anti-red/anit-green/anti-blue
-    float velocityX, velocityY;
+    double velocityX, velocityY;
     int type;// 0
 } Particle;
 
