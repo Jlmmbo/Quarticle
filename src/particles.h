@@ -13,18 +13,23 @@ typedef struct Particle {
 
 void UpdateParticles(Particle* particles, int count) {
     //classical forces
+    float force;
     for (int i = 0; i < count; i++) {
         particles[i].x += particles[i].velocityX;
         particles[i].y += particles[i].velocityY;
         for (int j = 0; j < count; j++) {
             if (i == j) continue;
 
-            // Gravity
             float dx = particles[j].x - particles[i].x;
             float dy = particles[j].y - particles[i].y;
             float d = sqrt(dx * dx + dy * dy) + 0.0001f; // Avoid division by zero
 
-            float force = particles[i].mass * particles[j].mass / (d * d);
+            //Gravitational force
+            force = particles[i].mass * particles[j].mass / (d * d);
+
+            //Electromagnetic force
+            force += particles[i].charge * particles[j].charge / (d * d);
+
             particles[i].velocityX += force * dx / d / particles[i].mass;
             particles[i].velocityY += force * dy / d / particles[i].mass;
         }
