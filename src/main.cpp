@@ -5,12 +5,29 @@
 
 #include "particles.h"
 #include "draw.h"
+#include "ui.h"
 
 #define PARTICLE_COUNT 2
 #define SCREEN_WIDTH 1920
 #define SCREEN_HEIGHT 1080
 #define FIXED_TIMESTEP (1.0 / 60.0)
 #define MAX_FRAME_TIME 0.1
+
+struct AppState {
+    Particle* particles;
+    int count;
+    int selected;
+};
+
+static void MouseCallback(GLFWwindow* window, int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        AppState* state = (AppState*)glfwGetWindowUserPointer(window);
+        if (!state) return;
+        double x, y;
+        glfwGetCursorPos(window, &x, &y);
+        state->selected = PickParticle(state->particles, state->count, x, y, SCREEN_WIDTH, SCREEN_HEIGHT);
+    }
+}
 
 int main() {
     glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
@@ -41,6 +58,14 @@ int main() {
         {600, 100, 10, 0.01, 0, 0, 2, 0, 60},
     };
 
+    if (!InitUI()) {
+        std::cerr << "Failed to initialize UI\n";
+    }
+
+    AppState state = { particles, PARTICLE_COUNT, -1 };
+    glfwSetWindowUserPointer(window, &state);
+    glfwSetMouseButtonCallback(window, MouseCallback);
+
     double lastTime = glfwGetTime();
     double accumulator = 0.0;
 
@@ -61,6 +86,15 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
         Draw(particles, PARTICLE_COUNT);
+
+        if (state.selected >= 0 && state.selected < state.count) {
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            DrawSelectionHighlight(&particles[state.selected], SCREEN_WIDTH, SCREEN_HEIGHT);
+            DrawParticlePanel(&particles[state.selected], state.selected, SCREEN_WIDTH, SCREEN_HEIGHT);
+            glDisable(GL_BLEND);
+        }
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }

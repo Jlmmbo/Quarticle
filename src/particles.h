@@ -1,3 +1,8 @@
+#ifndef PARTICLES_H
+#define PARTICLES_H
+
+#include <cmath>
+
 // Uses planck units for simplicity of formulas
 
 typedef struct Particle {
@@ -35,3 +40,5 @@ void UpdateParticles(Particle* particles, int count, double dt) {
         }
     }
 }
+
+#endif
